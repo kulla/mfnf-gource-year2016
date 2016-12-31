@@ -1,0 +1,6 @@
+git/
+video\.ppm
+video\.webm
+video\.mp4
+ffmpeg2pass-0\.log*
+final_logo\.png
