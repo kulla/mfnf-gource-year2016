@@ -159,6 +159,29 @@ class Node(object):
         for child in self.children:
             yield from child.revisions()
 
+USER = {}
+NO = 1
+
+def uniq_name(address):
+    global USER
+    global NO
+
+    if address not in USER:
+        USER[address] = " " * NO
+        NO+=1
+
+    return USER[address]
+
+def is_ip(address):
+    import ipaddress
+
+    try:
+        ipaddress.ip_address(address)
+
+        return True
+    except ValueError:
+        return False
+
 def git_add_rev(rev):
     dirname = os.path.dirname(rev["target"])
 
@@ -173,6 +196,10 @@ def git_add_rev(rev):
 
         date = rev["timestamp"].rstrip("Z")
         user = rev["user"]
+
+        if is_ip(user):
+            user = uniq_name(user)
+
         comment = rev["comment"].replace("'", "")
 
         check_call(
