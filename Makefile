@@ -12,7 +12,13 @@
 # <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 .PHONY: all
-all: video.webm video.mp4
+all: final.mp4 final.webm
+
+final.mp4: video.mp4
+	ffmpeg -i video.mp4 -t 128 final.mp4
+
+final.webm: video.webm
+	ffmpeg -i video.webm -t 128 final.webm
 
 video.webm: video.ppm audio.mp3
 	ffmpeg -y -r 30 -f image2pipe -vcodec ppm -i $< \
